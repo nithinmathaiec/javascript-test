@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>JS Script Test</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="theme-color" content="#000000">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+      <style>
+         #tablediv {
+         height: 500px;
+         overflow: hidden;
+         }
+         .pageContainer {
+         text-align: center;
+         margin-left: 0px;
+         margin-right: 0px;
+         margin-top: 25px;
+         margin-bottom: 25px;
+         }
+         .selectButton {
+         display: flex;
+         justify-content: center;
+         margin-bottom: 40px;
+         }
+         .formsInput {
+         margin-top: 15px;
+         margin-left: 30px;
+         }
+         .formdiv {
+         margin-top: 50px;
+         margin-left: 50px;
+         margin-right: 50px;
+         margin-bottom: 30px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container-fluid pageContainer">
+         <h3>JavaScript Test</h3>
+      </div>
+      <div class="container-fluid">
+         <div class="row">
+            <div class="leftAside col-xs-4 col-md-4 col-lg-4">
+               <form class="border border-dark rounded" id="myForm" action="javascript:void(0);" onsubmit="Submit()">
+                  <div class="formsInput formdiv">
+                     <div class="form-group row">
+                        <label class="col-xs-4 col-md-4 col-lg-4 col-form-label" for="id">ID</label>
+                        <div class="col-xs-8 col-md-8 col-lg-8">
+                           <input class="form-control" type="number" id="id" name="id">
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <label class="col-xs-4 col-md-4 col-lg-4 col-form-label" for="flightTime">Flight Time</label>
+                        <div class="col-xs-8 col-md-8 col-lg-8">
+                           <input class="form-control" type="number" id="flightTime" name="flightTime">
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <legend class="col-xs-4 col-md-4 col-lg-4 col-form-label" for="stops">STOPS </legend>
+                        <div class="col-xs-8 col-md-8 col-lg-8">
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" id="true" name="stops" value="true">
+                              <label class="form-check-label" for="true">True</label>
+                           </div>
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" id="false" name="stops" value="false">
+                              <label class="form-check-label" for="false">False</label>
+                           </div>
+                           <div class="form-check">
+                              <input class="form-check-input" type="radio" id="all" name="stops" value="all" checked>
+                              <label class="form-check-label" for="all">All</label>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                        <div class="form-check">
+                           <input class="form-check-input " type="checkbox" name="merge" id="merge" value="merge" >
+                           <label class="form-check-label" for="merge">
+                           Merge Rows by ID
+                           </label>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="selectButton">
+                     <input class= "btn btn-dark" type="submit" value="Select">
+                  </div>
+               </form>
+            </div>
+            <div class="col-xs-8 col-md-8 col-lg-8" id="tablediv"></div>
+         </div>
+      </div>
+   </body>
+   <script type="text/javascript" src="sample-data.js"></script>
+   <script type="text/javascript" src="index.js"></script>
+   <script>
+      function Submit() {
+        const idCheck = Number(document.getElementById("id").value)
+        const flightTimeCheck = Number(document.getElementById("flightTime").value);
+        const mergeCheck = document.getElementById("merge").checked;
+        const stopsStatusA = document.getElementById("true").checked; 
+        const stopsStatusT = document.getElementById("false").checked;
+        const stopsStatusF = document.getElementById("all").checked;
+        let  stopsStatusFinal = 'all';
+        if(stopsStatusA){
+          stopsStatusFinal = 'true';
+        }
+        else if(stopsStatusT){
+          stopsStatusFinal = 'false';
+        }
+      
+        const objectCallCheck = {
+          id: idCheck,
+          minflightTime: flightTimeCheck,
+          merge: mergeCheck,
+          stop: stopsStatusFinal
+        };
+        const returnArray = select(dataInput,objectCallCheck);
+          let tableCreate = "<table class='table table-striped' border='1|1'>";
+                tableCreate+="<tr>";
+                tableCreate+="<th>"+"ID"+"</th>";
+                tableCreate+="<th>"+"Min Flight Time"+"</th>";
+                tableCreate+="<th>"+"Stop"+"</th>";
+            for (let i = 0; i < returnArray.length; i++) {
+                tableCreate+="<tr>";
+                tableCreate+="<td>"+returnArray[i].id+"</td>";
+                tableCreate+="<td>"+returnArray[i].flightTime+"</td>";
+                tableCreate+="<td>"+returnArray[i].stops+"</td>";
+                tableCreate+="</tr>";
+            }
+            tableCreate+="</table>";
+            document.getElementById("tablediv").innerHTML = tableCreate; 
+            document.getElementById("tablediv").style["overflow-y"]="Scroll";
+            
+      }
+   </script>
+</html>
